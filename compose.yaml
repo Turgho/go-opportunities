@@ -9,7 +9,7 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_DB: opportunities_db
     ports:
-      - "5439:5438"
+      - "5439:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./db/docker-database-initial.sql:/docker-entrypoint-initdb.d/docker-database-initial.sql
@@ -21,7 +21,7 @@ services:
       - api_db
     environment:
       DB_HOST: api_db
-      DB_PORT: 5438
+      DB_PORT: 5432
       DB_USER: postgres
       DB_PASSWORD: password
       DB_NAME: opportunities_db
