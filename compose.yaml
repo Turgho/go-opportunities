@@ -1,15 +1,13 @@
-version: '3.9'
-
 services:
   api_db:
     image: postgres:13
     container_name: api_db
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: opportunities_db
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
     ports:
-      - "5439:5432"
+      - "${DB_PORT}:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
       - ./db/docker-database-initial.sql:/docker-entrypoint-initdb.d/docker-database-initial.sql
@@ -20,11 +18,11 @@ services:
     depends_on:
       - api_db
     environment:
-      DB_HOST: api_db
+      DB_HOST: ${DB_HOST}
       DB_PORT: 5432
-      DB_USER: postgres
-      DB_PASSWORD: password
-      DB_NAME: opportunities_db
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_NAME: ${DB_NAME}
     ports:
       - "8000:8000"
     command: ["./app"]
