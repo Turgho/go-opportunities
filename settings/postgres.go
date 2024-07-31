@@ -1,6 +1,8 @@
 package settings
 
 import (
+	"fmt"
+
 	"github.com/Turgho/go-opportunities.git/schemas"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -9,8 +11,18 @@ import (
 func IniatializePostgres() (*gorm.DB, error) {
 	logger := GetLogger("postgres")
 
+	// Get .env variables
+	env, err := GetEnv()
+	if err != nil {
+		logger.Errorf("can't get .env variables: %v", err)
+		return nil, err
+	}
+
 	// Database connection
-	psql := "host=api_db user=postgres password=password dbname=opportunities_db port=5432 sslmode=disable"
+	psql := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable",
+		env[0], env[1], env[2], env[3],
+	)
 
 	// Conect to postgres database
 	db, err := gorm.Open(postgres.Open(psql), &gorm.Config{})
